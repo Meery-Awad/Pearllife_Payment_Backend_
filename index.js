@@ -70,14 +70,15 @@ app.post('/payment-status', async (req, res) => {
     res.status(err.response?.status || 500).json({ error: err.response?.data || err.message });
   }
 });
-app.post("/receive-data", (req, res) => {
-  tempUserData = req.body;
-  res.json({ message: "Data received successfully", data: tempUserData });
-});
 
-app.get("/get-user-data", (req, res) => {
-  res.json(tempUserData);
-});
+// app.post("/receive-data", (req, res) => {
+//   tempUserData = req.body;
+//   res.json({ message: "Data received successfully", data: tempUserData });
+// });
+
+// app.get("/get-user-data", (req, res) => {
+//   res.json(tempUserData);
+// });
 
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));

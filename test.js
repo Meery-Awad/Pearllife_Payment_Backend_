@@ -1,6 +1,6 @@
 {/* <script>
 document.addEventListener("DOMContentLoaded", function () {
-  const wixForm = document.querySelector("form6");
+  const wixForm = document.querySelector("#form6");
   if (!wixForm) return;
 
   wixForm.addEventListener("submit", function (e) {
