@@ -2,6 +2,7 @@
 const express = require('express');
 const axios = require('axios');
 const http = require("http");
+const nodemailer = require("nodemailer");
 const bodyParser = require('body-parser');
 require('dotenv').config();
 const app = express();
@@ -11,14 +12,14 @@ app.use(bodyParser.json());
 const BASE_URL = 'https://eu-prod.oppwa.com/';
 const ENTITY_ID = process.env.OPP_ENTITY_ID;
 const AUTH_TOKEN = process.env.OPP_TOKEN ;
+
+
 const cors = require("cors");
-
-
 const allowedOrigins = [
   "http://localhost:3000",
-  "https://pearllife.netlify.app"
-
+  "https://pearllife.netlify.app",
 ];
+
 const server = http.createServer(app);
 
 const corsOptions = {
@@ -68,6 +69,48 @@ app.post('/payment-status', async (req, res) => {
     res.json(r.data);
   } catch (err) {
     res.status(err.response?.status || 500).json({ error: err.response?.data || err.message });
+  }
+});
+app.post("/payment-notification", async (req, res) => {
+   const { user } = req.body; 
+  try {
+    const transporter = nodemailer.createTransport({
+      host: "smtp.dreamhost.com",
+      port: 465,
+      secure: true,
+      auth: {
+        user: "hello@pearllifefuneralservices.com",
+        pass: "G6%xY2BGW1%EfXNt"
+      }
+    });
+
+    const mailOptions = {
+      from: `"Website Payment Notification`,
+      to: "hello@pearllifefuneralservices.com", 
+      subject: `💳 New Payment Received - ${user.name}`,
+      html: `
+        <div style="font-family:Arial,sans-serif;line-height:1.6;color:#333;padding:15px;background:#f9f9f9;border-radius:8px;">
+          <h2 style="color:#4a4a4a;">💰 New Payment Received</h2>
+          <p>Details of the payment made by a user:</p>
+          <table style="border-collapse:collapse;width:100%;max-width:500px;">
+            <tr><td><b>Name:</b></td><td>${user.name}</td></tr>
+            <tr><td><b>Email:</b></td><td>${user.email}</td></tr>
+            <tr><td><b>Phone:</b></td><td>${user.phone}</td></tr>
+            <tr><td><b>Amount Paid:</b></td><td>£${user.amount}</td></tr>
+          </table>
+          <p style="margin-top:20px;">
+            <small>This is an automated notification — please do not reply.</small>
+          </p>
+        </div>
+      `
+    };
+
+    await transporter.sendMail(mailOptions);
+    res.json({ message: "Payment notification sent successfully" });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Failed to send payment notification", error: err.message });
   }
 });
 
