@@ -73,6 +73,7 @@ app.post('/payment-status', async (req, res) => {
 });
 app.post("/payment-notification", async (req, res) => {
    const { user } = req.body; 
+  
   try {
     const transporter = nodemailer.createTransport({
       host: "smtp.dreamhost.com",
