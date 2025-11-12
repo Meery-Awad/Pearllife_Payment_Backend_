@@ -96,7 +96,7 @@ app.post("/payment-notification", async (req, res) => {
             <tr><td><b>Name:</b></td><td>${user.name}</td></tr>
             <tr><td><b>Email:</b></td><td>${user.email}</td></tr>
             <tr><td><b>Phone:</b></td><td>${user.phone}</td></tr>
-            <tr><td><b>Amount Paid:</b></td><td>£${user.amount}</td></tr>
+            <tr><td><b>Amount Paid:</b></td><td>£ 1495</td></tr>
           </table>
           <p style="margin-top:20px;">
             <small>This is an automated notification — please do not reply.</small>
